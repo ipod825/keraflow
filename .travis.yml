@@ -1,0 +1,22 @@
+sudo: required
+dist: trusty
+language: python
+matrix:
+    include:
+        - python: 3.5
+          env: KERAFLOW_BACKEND=theano
+        - python: 3.5
+          env: KERAFLOW_BACKEND=tensorflow
+        - python: 2.7
+          env: KERAFLOW_BACKEND=theano
+        - python: 2.7
+          env: KERAFLOW_BACKEND=tensorflow
+        - python: 2.7
+          env: TEST_MODE=PEP8
+install:
+  - bash dev_scripts/install_dependency.sh
+  - python -q setup.py install
+
+# command to run tests
+script:
+    - bash dev_scripts/run_test.sh
