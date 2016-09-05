@@ -64,12 +64,12 @@ $ sudo pip install keraflow
 ## Contributing
 
 ### Environment Setting
-To make Keraflow compatible with both python2 & python3. We use [pyenv](https://github.com/yyuu/pyenv) to build virtual environment. 
+To make Keraflow compatible with both python2 & python3. We use [pyenv](https://github.com/yyuu/pyenv) to build virtual environment.
 The shell script `dev_scrips/install_dependency.sh` could quickly sets up the testing environments.
 ~~~{.bash}
-# In project root directory (parent directory  of `dev_scripts`) 
+# In project root directory (parent directory  of `dev_scripts`)
 $ bash dev_scrips/install_dependency.sh
-# Two pyenv environment k2, k3 are installed now. 
+# Two pyenv environment k2, k3 are installed now.
 ~~~
 
 __Note__: The script does not add pyenv PATH in your script config file (e.g. ~/.zshrc). You will need to manually copy and paste the following into your shell config file so that the next time you log in, pyenv will be in the PATH:
@@ -87,7 +87,7 @@ $ python setup.py develop  # will link the project root into k2's site package d
 
 And then run tests via `dev_scripts/run_test.sh`. Run:
 ~~~{.bash}
-# In project root directory (parent directory  of `dev_scripts`) 
+# In project root directory (parent directory  of `dev_scripts`)
 $ bash dev_scripts/run_test.sh
 ~~~
 
@@ -114,7 +114,7 @@ $ pip install flask8
 
 
 ### Documentation
-1. Documentation uses [doxygen](https://www.stack.nl/~dimitri/doxygen/manual/docblocks.html). 
+1. Documentation uses [doxygen](https://www.stack.nl/~dimitri/doxygen/manual/docblocks.html).
 2. Follow the convention to use `@` for special commands (`param`, `package`... etc.)
 3. Installation
 ~~~{.bash}
@@ -155,11 +155,11 @@ def __init__(self, output_dim, init='glorot_uniform', activation='linear', weigh
 
 __Keraflow__
 ~~~{.py}
-def __init__(self, output_dim, init='glorot_uniform', activation='linear', **kwargs):
+def __init__(self, output_dim, init='glorot_uniform', activation='linear', bias=True, **kwargs):
 ~~~
 
-The signal of `initial weights`, `regularizers`, and `constraints` disappear since Keraflow takes care of them in __Layer__ class. 
-The signal of input dimension also disappears since Keraflow force users to specify an __Input__ layer even for __Sequential__ (described below).
+The signal of `initial weights`, `regularizers`, and `constraints` disappear since Keraflow takes care of them in __Layer__ class.
+The signal of input dimension also disappears since Keraflow force users to specify an __Input__ layer and their shape for all models.
 
 When creating a customized layer, users no longer need to write `regularizers`, `constraints` initialization code for the layer. Special care for the input dimension is also unnecessary.
 
@@ -174,8 +174,8 @@ dense = Dense(64, initial_weights=[W, b],
               constraints=['maxnorm', 'unitnorm'])
 ~~~
 
-#### No get_config for serialization.
-Every layer in Keras has a `get_config` function, which is needed for serializing models. Though its implementation is not necessary for customized layers, it would be good for developers to save the time implementing it just for serializing their models. 
+#### No `get_config` for serialization.
+Every layer in Keras has a `get_config` function, which is needed for serializing models. Though its implementation is not necessary for customized layers, it would be good for developers to save the time implementing it just for serializing their models.
 
 Keraflow takes care of this, every layer that fulfils some [constraints](https://ipod825.github.io/keraflow/doc/html/md_Developer-Guide.html#serialization_mechanism) is naturally seizable.
 
@@ -187,4 +187,4 @@ In Keraflow, you could simply write (in `output` function, the correspondence of
 self.embed(Dense(output_dim))(input_tensor)
 ~~~
 
-Everything is done!! The parameters of `Dense` is automatically added as parameters of your layer and is updated during training.
+Everything is done!! The parameters of `Dense` is automatically added as parameters of your layer and is updated during training. For more information, see [Layer Embedding](https://ipod825.github.io/keraflow/doc/html/md_Developer-Guide.html#layer_embedding)
