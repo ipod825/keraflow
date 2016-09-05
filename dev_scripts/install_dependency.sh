@@ -28,18 +28,14 @@ function run_version(){
     pyenv install $1 -s
 
     # create virtual env
-    # the former does not work on my computer; the later does not work on travis...
-    if [[ -n $TRAVIS_PYTHON_VERSION ]]; then
-        export PYENV_VERSION=$1
-    else
-        pyenv activate $1
-    fi
+    export PYENV_VERSION=$1
+    #pyenv activate $1
     conda update -q conda
     pyenv virtualenv $1 $2
 
-    # building dependencies
+    # building dependencies in created virtual env
     export PYENV_VERSION=$2
-    pip -q install --upgrade -r dev_scripts/dev_requirements.txt
+    pip install --upgrade -r dev_scripts/dev_requirements.txt
     conda config --set always_yes yes --set changeps1 no
     conda install -q numpy scipy && \
     pip install theano --upgrade && \

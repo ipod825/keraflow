@@ -13,10 +13,23 @@ matrix:
           env: KERAFLOW_BACKEND=tensorflow
         - python: 2.7
           env: TEST_MODE=PEP8
+
 install:
   - bash dev_scripts/install_dependency.sh
-  - python -q setup.py install
+  # reinitialize pyenv so that we can enter virtual env create by install_dependency.sh
+  - eval "$(pyenv init -)"
+  - eval "$(pyenv virtualenv-init -)"
+  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
+       pyenv local k2;
+    elif [[ "$TRAVIS_PYTHON_VERSION" == "3.5" ]]; then
+       pyenv local k3;
+    fi
+  - python setup.py install
 
 # command to run tests
 script:
-    - bash dev_scripts/run_test.sh
+  # create backend stuffs to avoid concurrent creation at runtime
+  - python -c "import keraflow.backend"
+  - mkdir ~/.keraflow/datasets
+  - bash dev_scripts/run_test.sh
+
