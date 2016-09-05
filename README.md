@@ -10,8 +10,8 @@ As its official description, [Keras](https://github.com/fchollet/keras) serves a
 2. A cleaner and more consistent API for user to use and extend it.
 3. Some extra functionality not implemented in Keras.
 
-For the full API reference, read the [online documentation](https://ipod825.github.io/keraflow/doc/html/index.html).
-It is strongly recommended to read the [Tutorials](https://ipod825.github.io/keraflow/doc/html/md_Tutorials.html) first to know the basics on building neural network models with Keraflow.
+For the full API reference, read the [online documentation](https://ipod825.github.io/keraflow/docs/html/index.html).
+It is strongly recommended to read the [Tutorials](https://ipod825.github.io/keraflow/docs/html/md_Tutorials.html) first to know the basics on building neural network models with Keraflow.
 
 ---
 ## Features
@@ -177,7 +177,7 @@ dense = Dense(64, initial_weights=[W, b],
 #### No `get_config` for serialization.
 Every layer in Keras has a `get_config` function, which is needed for serializing models. Though its implementation is not necessary for customized layers, it would be good for developers to save the time implementing it just for serializing their models.
 
-Keraflow takes care of this, every layer that fulfils some [constraints](https://ipod825.github.io/keraflow/doc/html/md_Developer-Guide.html#serialization_mechanism) is naturally seizable.
+Keraflow takes care of this, every layer that fulfils some [constraints](https://ipod825.github.io/keraflow/docs/html/md_Developer-Guide.html#serialization_mechanism) is naturally seizable.
 
 #### Embed existing layers to write new layers
 Currently, in Keras, when writing you own layers, even if you want to conduct similar operation of the `Dense` layer, you still need to define some trainable parameters (write initialization code and add it to the layer's trainable parameters list) for that.
@@ -187,4 +187,4 @@ In Keraflow, you could simply write (in `output` function, the correspondence of
 self.embed(Dense(output_dim))(input_tensor)
 ~~~
 
-Everything is done!! The parameters of `Dense` is automatically added as parameters of your layer and is updated during training. For more information, see [Layer Embedding](https://ipod825.github.io/keraflow/doc/html/md_Developer-Guide.html#layer_embedding)
+Everything is done!! The parameters of `Dense` is automatically added as parameters of your layer and is updated during training. For more information, see [Layer Embedding](https://ipod825.github.io/keraflow/docs/html/md_Developer-Guide.html#layer_embedding)

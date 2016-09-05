@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['save_5farch',['save_arch',['../classkeraflow_1_1models_1_1Model.html#a1ff8a0d40ebab7ea0151eb219f391f72',1,'keraflow::models::Model']]],
+  ['save_5fto_5ffile',['save_to_file',['../classkeraflow_1_1models_1_1Model.html#a21c7b24f84b8058cbecef14672f67bee',1,'keraflow::models::Model']]],
+  ['save_5fweights',['save_weights',['../classkeraflow_1_1models_1_1Model.html#af8bac1e6a95af2761ba93a9609e3f0ca',1,'keraflow::models::Model']]],
+  ['serialize',['serialize',['../namespacekeraflow_1_1utils_1_1generic__utils.html#a9f5e61993a3dc07976bd217655305d99',1,'keraflow::utils::generic_utils']]],
+  ['set_5ftrainable_5fparams',['set_trainable_params',['../classkeraflow_1_1layers_1_1base_1_1Layer.html#aefe7a977e17e916b43e0ff9b7b41140a',1,'keraflow::layers::base::Layer']]],
+  ['set_5fvalue',['set_value',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#a816d69839e1ab6416da0797a8b8793e0',1,'keraflow::backend::tensorflow_backend::TensorflowBackend']]],
+  ['shape',['shape',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#ad3b309bf625b5789a6d2e75fd05714a6',1,'keraflow.backend.tensorflow_backend.TensorflowBackend.shape()'],['../classkeraflow_1_1backend_1_1theano__backend_1_1TheanoBackend.html#a10587878d6c415df6e3bed012705d801',1,'keraflow.backend.theano_backend.TheanoBackend.shape()']]],
+  ['sigmoid',['sigmoid',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#a1f1af77e74a08586d36c4b626b943823',1,'keraflow.backend.tensorflow_backend.TensorflowBackend.sigmoid()'],['../namespacekeraflow_1_1activations.html#a973882e3b7446cb3a7729d886d4ee81e',1,'keraflow.activations.sigmoid()']]],
+  ['sign',['sign',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#a7e1c52a1151548ba3127977a9a52cc01',1,'keraflow::backend::tensorflow_backend::TensorflowBackend']]],
+  ['sin',['sin',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#a33ee6a33f51adf69154524e90a4e4ff1',1,'keraflow::backend::tensorflow_backend::TensorflowBackend']]],
+  ['softmax',['softmax',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#a292a56286510933f1312410e1ffde99c',1,'keraflow.backend.tensorflow_backend.TensorflowBackend.softmax()'],['../namespacekeraflow_1_1activations.html#ac7e32fad4da80ce894223902a756bb42',1,'keraflow.activations.softmax()']]],
+  ['softplus',['softplus',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#ac9fe3e8036eaf9f9b0ea281b995365ea',1,'keraflow.backend.tensorflow_backend.TensorflowBackend.softplus()'],['../namespacekeraflow_1_1activations.html#a81530097938f579aebb768139cc927c5',1,'keraflow.activations.softplus()']]],
+  ['softsign',['softsign',['../namespacekeraflow_1_1activations.html#a32f1805a9b7721f5629632a0a57afa57',1,'keraflow::activations']]],
+  ['sqrt',['sqrt',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#a20e645a885466c08d18ec5e9f086982e',1,'keraflow::backend::tensorflow_backend::TensorflowBackend']]],
+  ['square',['square',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#afe97256f7725cf1998c8233e1f70fde5',1,'keraflow::backend::tensorflow_backend::TensorflowBackend']]],
+  ['square_5ferror',['square_error',['../namespacekeraflow_1_1objectives.html#ae4345b48a43671d2ec5ee6a036512e0c',1,'keraflow::objectives']]],
+  ['squared_5fhinge',['squared_hinge',['../namespacekeraflow_1_1objectives.html#a87e6015f237d60dd3f77f2ca433411c0',1,'keraflow::objectives']]],
+  ['squared_5flogarithmic_5ferror',['squared_logarithmic_error',['../namespacekeraflow_1_1objectives.html#a088d68195e270b1545cdeeee5395c9a3',1,'keraflow::objectives']]],
+  ['squeeze',['squeeze',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#a5819ab372d1da4f2343dda216374e150',1,'keraflow.backend.tensorflow_backend.TensorflowBackend.squeeze()'],['../classkeraflow_1_1backend_1_1theano__backend_1_1TheanoBackend.html#a18327c696af55374bca7a4ebbc0fd2f1',1,'keraflow.backend.theano_backend.TheanoBackend.squeeze()']]],
+  ['std',['std',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#ac0683e4c6845e4b205cd8803520d0032',1,'keraflow::backend::tensorflow_backend::TensorflowBackend']]],
+  ['switch',['switch',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#a6f5eaa2bb63d012f6e02e1cbdb74f06d',1,'keraflow.backend.tensorflow_backend.TensorflowBackend.switch()'],['../classkeraflow_1_1backend_1_1theano__backend_1_1TheanoBackend.html#a029663d88fcac635e974cb5265e765ee',1,'keraflow.backend.theano_backend.TheanoBackend.switch()']]]
+];
