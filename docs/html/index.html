@@ -100,7 +100,13 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="title">Keraflow Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2>Why Keraflow</h2>
+<div class="textblock"><div class="image">
+<img src="https://travis-ci.org/travis-ci/travis-web.svg?branch=master"  alt="Build Status"/>
+</div>
+ <div class="image">
+<img src="https://badge.fury.io/py/keraflow.svg"  alt="PyPI version"/>
+</div>
+<h2>Why Keraflow</h2>
 <blockquote class="doxtable">
 <p>Keras is a minimalist, highly modular neural networks library, written in Python and capable of running on top of either <a href="https://github.com/tensorflow/tensorflow">TensorFlow</a> or <a href="https://github.com/Theano/Theano">Theano</a>. It was developed with a focus on enabling fast experimentation. Being able to go from idea to result with the least possible delay is key to doing good research.</p>
 <p></p>
@@ -111,7 +117,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <li>A cleaner and more consistent API for user to use and extend it.</li>
 <li>Some extra functionality not implemented in Keras.</li>
 </ol>
-<p>For the full API reference, read the <a href="https://ipod825.github.io/keraflow/doc/html/index.html">online documentation</a>. It is strongly recommended to read the <a href="https://ipod825.github.io/keraflow/doc/html/md_Tutorials.html">Tutorials</a> first to know the basics on building neural network models with Keraflow. </p>
+<p>For the full API reference, read the <a href="https://ipod825.github.io/keraflow/docs/html/index.html">online documentation</a>. It is strongly recommended to read the <a href="https://ipod825.github.io/keraflow/docs/html/md_Tutorials.html">Tutorials</a> first to know the basics on building neural network models with Keraflow. </p>
 <hr/>
  <h2>Features</h2>
 <h3>Keras-like</h3>
@@ -228,18 +234,18 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;              constraints=[<span class="stringliteral">&#39;maxnorm&#39;</span>, <span class="stringliteral">&#39;unitnorm&#39;</span>])</div>
 </div><!-- fragment --><h4>No <code>get_config</code> for serialization.</h4>
 <p>Every layer in Keras has a <code>get_config</code> function, which is needed for serializing models. Though its implementation is not necessary for customized layers, it would be good for developers to save the time implementing it just for serializing their models.</p>
-<p>Keraflow takes care of this, every layer that fulfils some <a href="https://ipod825.github.io/keraflow/doc/html/md_Developer-Guide.html#serialization_mechanism">constraints</a> is naturally seizable.</p>
+<p>Keraflow takes care of this, every layer that fulfils some <a href="https://ipod825.github.io/keraflow/docs/html/md_Developer-Guide.html#serialization_mechanism">constraints</a> is naturally seizable.</p>
 <h4>Embed existing layers to write new layers</h4>
 <p>Currently, in Keras, when writing you own layers, even if you want to conduct similar operation of the <code>Dense</code> layer, you still need to define some trainable parameters (write initialization code and add it to the layer's trainable parameters list) for that.</p>
 <p>In Keraflow, you could simply write (in <code>output</code> function, the correspondence of <code>get_output_for</code> in Keras): </p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;self.embed(Dense(output_dim))(input_tensor)</div>
-</div><!-- fragment --><p>Everything is done!! The parameters of <code>Dense</code> is automatically added as parameters of your layer and is updated during training. For more information, see <a href="https://ipod825.github.io/keraflow/doc/html/md_Developer-Guide.html#layer_embedding">Layer Embedding</a> </p>
+</div><!-- fragment --><p>Everything is done!! The parameters of <code>Dense</code> is automatically added as parameters of your layer and is updated during training. For more information, see <a href="https://ipod825.github.io/keraflow/docs/html/md_Developer-Guide.html#layer_embedding">Layer Embedding</a> </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Sep 5 2016 15:54:50 for Keraflow by
+    <li class="footer">Generated on Mon Sep 5 2016 16:51:26 for Keraflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
