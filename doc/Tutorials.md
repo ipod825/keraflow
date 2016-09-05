@@ -18,7 +18,7 @@ dense_layer = Dense(output_dim=64, init='unitorm', activation='linear')
 Y = dense_layer(X)  # Y=WX+b
 ~~~
 
-In Keraflow, an [Input](@ref keraflow.layers.base.Input) layer (line 1) is a special type of layer that could be treated as a symbolic tensor. By feeding a tensor to a layer (line 4), we got a new symbolic tensor Y, which can then be fed to another layer.
+In Keraflow, an [Input](@ref keraflow.layers.base.Input) layer (line 1) is a special type of layer that could be treated as a symbolic tensor. By feeding a tensor `X` to a layer (line 4), we got a new symbolic tensor `Y`, which can then be fed to another layer.
 
 ## Layer Initialization {#layer_initialization}
 Each layer takes different arguments to initialize. As seen above, a dense layer takes three argument. However, there are some common key word arguments you could pass to every layer, which are defined in Layers' [__init__](@ref keraflow.layers.base.Layer.__init__):
@@ -134,7 +134,7 @@ from keraflow.models import Model
 
 X = Input(100)
 M = Dense(50)(X)
-Y = Dense(2, activation='softmax')(X)
+Y = Dense(2, activation='softmax')(M)
 model = Model(inputs=X, outputs=Y)  
 
 ~~~
@@ -176,7 +176,7 @@ For a model with multiple outputs, we need to specify a loss function for each o
 ~~~{.py}
 model.compile(optimizer='sgd', loss={'output1':'categorical_crossentropy', 'output2': 'mean_squared_error'})
 ~~~
-Note that the name of each output channel is the name the corresponding output layer. If you feel that writing these names unnecessary, you could also pass a list to `loss` (see @ref Objectives.md).
+Note that the name of each output channel is the name of the corresponding output layer (`output1`, `output2` in the example). If you feel that writing these names unnecessary, you could also pass a list to `loss` (see @ref Objectives.md).
 
 In the examples, we pass strings (e.g. `sgd`, `categorical_crossentropy`). These strings are actually alias of predefined optimizers and loss functions. You could also pass customized optimize/loss function instance (see @ref Optimizers.md, @ref Objectives.md).
 
@@ -189,7 +189,7 @@ Both [Model](keraflow.models.Model) and [Sequential](keraflow.models.Sequential)
 
 Both `fit` and `evaluate` takes `X` and `Target` as inputs. As for `predict`, only `X` is required.
 
-For `Sequential` (single input, single output), `X`, `Target` takes a single numpy array (or list). For `Model`, `X`, `Target` takes a dictionary/list of numpy array(s) (see @ref argument_passing_summarization).
+For __Sequential__ (single input, single output), `X`, `Target` takes a single numpy array (or list). For __Model__, `X`, `Target` takes a dictionary/list of numpy array(s) (see @ref argument_passing_summarization).
 
 ## Model Serialization {#model_serialization}
 You could save a (trained) model to disk and restore it for later use. Simply run

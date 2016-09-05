@@ -1,7 +1,7 @@
 [TOC]
 
 # Writing Customized Layer {#writing_customized_layer}
-In the following, we describe the basic and advance issues about writing customized layer.
+In the following, we describe the basic and advanced issues about writing customized layer.
 
 ## Implementing Layer Functions {#implementing_layer_functions}
 To make a customized layer works:
@@ -10,14 +10,14 @@ To make a customized layer works:
 3. The following functions should be implemented:
 
 - [init_param(input_shape)](@ref keraflow.layers.base.Layer.init_param): Initialize and register the trainable parameters of the layer. If the layer contains no parameter, you could skip this function. 
-- [output(input_tensor)](@ref keraflow.layers.base.Layer.output): Transform input tensor (or a list of input tensors) into an output tensor. Note that the shape of the input tensor could be get by [Layer.get_tensor_shape](@ref keraflow.layers.base.Layer.get_tensor_shape). 
+- [output(input_tensor)](@ref keraflow.layers.base.Layer.output): Transform input tensor (or a list of input tensors) into an output tensor. Note that the shape of the input tensor could be obtained by [Layer.get_tensor_shape](@ref keraflow.layers.base.Layer.get_tensor_shape). 
 - [output_shape(input_shape)](@ref keraflow.layers.base.Layer.output_shape): Return the layer's output shape given the input shape (or a list of input shapes). If not implemented, default behavior is to return the input shape (or the first input shape in the list).
 - [input_dimension()](@ref keraflow.layers.base.Layer.input_dimension): For single input layers. Return the expected dimension of the input shape. If not implemented, Keraflow will not check if the input dimension is correct, which could lead to errors at run time.
 - [check_input_shape(input_shapes)](@ref keraflow.layers.base.MultiInputLayer.check_input_shape): For multiple-input layers. Validate if the input shapes are correct. If not implemented, default behavior will be checking if all the input shapes are the same. 
 - [pack_init_param()](@ref keraflow.layers.base.Layer.pack_init_param): Optional. You should abide some [constraints](@ref serialization_mechanism) on your layer's `__init__` to make it serializable, else you will need to implement this function if you want to correctly serialize the layer.
 
 
-The following example implements a layer that take an 1D tensor. Discard the first half units and fully connects the second half of the units to the output:
+The following example implements a layer that take an 1D tensor, discard the first half units, and fully connects the second half of the units to the output:
 ~~~{.py}
 from keraflow import utils
 from keraflow utils import backend as B
