@@ -33,3 +33,5 @@ script:
   - mkdir ~/.keraflow/datasets
   - bash dev_scripts/run_test.sh
 
+after_success:
+  - coveralls

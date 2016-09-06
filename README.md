@@ -1,6 +1,6 @@
 # Keraflow: Deep Learning library for Theano and Tensorflow. Keras follower.
-![Build Status](https://travis-ci.org/travis-ci/travis-web.svg?branch=master)
-![PyPI version](https://badge.fury.io/py/keraflow.svg)
+[![Build Status](https://travis-ci.org/travis-ci/travis-web.svg?branch=master)](https://travis-ci.org/ipod825/keraflow)
+[![PyPI version](https://badge.fury.io/py/keraflow.svg)](https://pypi.python.org/pypi/keraflow)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/ipod825/keraflow/blob/master/LICENSE)
 
 ## Why Keraflow
