@@ -9,7 +9,7 @@
 
 As its official description, [Keras](https://github.com/fchollet/keras) serves as an excellent front-end for graph based deep learning framework. However, from the point of view of soft-engineering, its API design and its complicated internal mechanism makes it hard to understand and cumbersome to extend. Therefore, I reimplement the core of Keras to provide:
 
-1. An simpler tensor linkage mechanism for developers to understand it.
+1. A simpler tensor linkage mechanism for developers to understand it.
 2. A cleaner and more consistent API for user to use and extend it.
 3. Some extra functionality not implemented in Keras.
 
@@ -126,7 +126,7 @@ $ sudo pip install doxypy
 ~~~
 4. Documentation generation
 ~~~{.bash}
-$ cd doc
+$ cd docs
 $ doxygen Doxyfile
 # open ./html/index.html with web browser
 ~~~

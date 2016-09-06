@@ -1,9 +1,7 @@
-
 import sys
 from collections import OrderedDict
 
 import numpy as np
-
 from tqdm import tqdm
 
 from . import backend as B
@@ -110,7 +108,7 @@ class Model(object):
         self._predict_fn = None
 
     def _compile_loss(self, sample_weights):
-        '''Final step for preparing loss, metrics tensors and training updates for further compilation.
+        '''Final step for preparing loss, metrics tensors and training updates.
         @param sample_weights: list/numpy array. Weights of each sample.
         '''
         if not hasattr(self, 'loss_compiled'):
@@ -561,7 +559,7 @@ class Sequential(Model, SequentialLayer):
         '''Configure the model and prepare inner utilized tensors.
         @param optimizer: str(name of optimizer class)/optimizer object. See keraflow.optimizers
         @param loss: objective function/str(name of objective function). Objective for the output. See @ref Objectives.md for a list of predefined objective functions.
-        @param metrics: objective function/str(name of objective function). Extra objective for the output. See @ref Objectives.md for a list of predefined objective functions.
+        @param metrics: objective function/str(name of objective function). Extra objective for the output. See @ref Objectives.md for a list of predefined objective functions. Note that you could only pass one objective since Sequential has only one output.
         '''
         self.input_kensors = [self.layers[0]]
         self.output_kensors = [self.get_output_kensor()]

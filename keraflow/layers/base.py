@@ -33,6 +33,7 @@ class Kensor(object):
 class Layer(object):
     ''' Building block of a model.
     A Layer transform input Kensor (s) into an output Kensor. The transformation could be one-to-one or many-to-one.
+    @see @ref an_over_view_of_layer
     '''
     def __init__(self, name=None, trainable=True, initial_weights=None, regularizers=None, constraints=None):
         '''
@@ -68,12 +69,12 @@ class Layer(object):
         '''
         error_pattern_msg = "Trainable weights should be set in the pattern: ('name1', param1, 'name2', param2)!!"
         if len(args) % 2 == 1:
-            raise KError(error_pattern_msg)  # cover
+            raise KError(error_pattern_msg)
 
         for i in range(0,len(args),2):
             name, param = args[i], args[i+1]
             if type(name) is not str:
-                raise KError(error_pattern_msg)  # cover
+                raise KError(error_pattern_msg)
             if hasattr(self, name):
                 raise KError("{} is a preserved variable name for Layer, pleas use another name.".format(name))
             setattr(self, name, param)
@@ -143,6 +144,7 @@ class Layer(object):
         return input_shapes[0]
 
     def support_mask(self):
+        '''Whether the layer supports to carry on to the output tensor the mask embedded in input tensor. If return True, the output tensor will be assigned a `.keraflow_mask` attribute same as the input tensor. This mask is currently used only by recurrent layers.'''
         return False
 
     def pack_init_param(self):
@@ -165,12 +167,12 @@ class Layer(object):
         return params
 
     def get_tensor_shape(self, tensor):
-        '''Get the shape of a tensor. Note that the we could only get the shape if the tensor is outputted by a layer of an embedded layer.
+        '''Get the shape of a tensor. Note that the we could only get the shape if the tensor is outputted by a layer or an embedded layer.
         @param tensor: backend tensor.
         @return tuple. Shape of the tensor.
         '''
         if '_keraflow_shape' not in tensor.__dict__.keys():
-            raise KError('Missing _keraflow_shape: You could only get the shape of a tensor outputted by a (embedded) keraflow layer!!')  # cover
+            raise KError('Missing _keraflow_shape: You could only get the shape of a tensor outputted by a (embedded) keraflow layer!!')
         return tensor._keraflow_shape
 
     def get_tensor_mask(self, tensor):
@@ -219,7 +221,7 @@ class Layer(object):
         return res
 
     def embed(self, target_layer):
-        '''Embeds the target layer such that the its trainable parameters (along with regularizers and constraints on the parameters) are treated as the host layer's parameters and are updated during traing process.
+        '''Embeds the target layer such that its trainable parameters (along with regularizers and constraints on the parameters) are treated as the host layer's parameters and are updated during traing process.
         Use it in a custmoized layer's output() function like:
         ~~~{.py}
         def output(self, x):
@@ -308,7 +310,7 @@ class Layer(object):
         return res
 
     def _init_and_output(self, input_tensors):
-        '''Initializes the layer and transformed input tensors into an output tensor.
+        '''Initializes the layer and transforms input tensors into an output tensor.
         '''
         input_tensors = utils.to_list(input_tensors)
 
@@ -368,9 +370,9 @@ class Layer(object):
                     layer._set_weights(embedded_layers_weights[layer.embedded_id])
 
         weights_list = self.get_wrc(weights, array=True, allow_missing='skip', error_context='initial weights of '+self.name)
-        params = [self.trainable_params[w[0]] for w in weights_list]
         names = [w[0] for w in weights_list]
         weights = [w[1] for w in weights_list]
+        params = [self.trainable_params[w[0]] for w in weights_list]
 
         for p, w, name in zip(params, weights, names):
             param_shape = B.eval(p).shape
@@ -382,7 +384,6 @@ class Layer(object):
         '''Sets the regularizers of the layer.
         @param regularizers: dict/list of regulizer object(s)/str (name of regularizer(s)) objects.
         @see Layer.__init__
-        @see keraflow.regularizers
         '''
         regularizers_list = self.get_wrc(regularizers, allow_missing='fill_none', error_context='regularizers of '+self.name)
         self.regularizers = {}
@@ -394,7 +395,6 @@ class Layer(object):
         '''Sets the constraints of the layer.
         @param constraints: dict/list of constraint objects(s)/str (name of constraint(s)).
         @see Layer.__init__
-        @see keraflow.constraints
         '''
         constraints_list = self.get_wrc(constraints, allow_missing='fill_none', error_context='constraints of '+self.name)
         self.constraints = {}
@@ -443,6 +443,7 @@ class Input(Layer, Kensor):
 
     def pack_init_param(self):
         params = utils.pack_init_param(self, include_kwargs=['name'])
+        # exclude batch_size so that `shape` is as passed
         params['shape'] = params['shape'][1:]
         return params
 
