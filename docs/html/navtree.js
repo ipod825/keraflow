@@ -72,7 +72,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"md_Developer-Guide.html#tensor_linkage_mechanism"
+"md_Developer-Guide.html#serialization_mechanism"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -3,5 +3,4 @@
 build/*
 dist/*
 keraflow.egg-info/*
-doc/html/*
 .coverage*

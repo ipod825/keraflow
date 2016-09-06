@@ -12,5 +12,6 @@ var classkeraflow_1_1layers_1_1base_1_1Layer =
     [ "output_shape", "classkeraflow_1_1layers_1_1base_1_1Layer.html#a720a2d4674e407d73302570c8cc5a968", null ],
     [ "pack_init_param", "classkeraflow_1_1layers_1_1base_1_1Layer.html#aa9a86d73c6970619f4d3049f7cef1820", null ],
     [ "set_trainable_params", "classkeraflow_1_1layers_1_1base_1_1Layer.html#aefe7a977e17e916b43e0ff9b7b41140a", null ],
+    [ "support_mask", "classkeraflow_1_1layers_1_1base_1_1Layer.html#a67b757551e60d38dda1887c595dd22a3", null ],
     [ "unpack_init_param", "classkeraflow_1_1layers_1_1base_1_1Layer.html#a1f1d4ffeb3f456e6d4c590c24e9aee81", null ]
 ];

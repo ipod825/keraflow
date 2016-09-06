@@ -24,5 +24,6 @@ var searchData=
   ['squared_5flogarithmic_5ferror',['squared_logarithmic_error',['../namespacekeraflow_1_1objectives.html#a088d68195e270b1545cdeeee5395c9a3',1,'keraflow::objectives']]],
   ['squeeze',['squeeze',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#a5819ab372d1da4f2343dda216374e150',1,'keraflow.backend.tensorflow_backend.TensorflowBackend.squeeze()'],['../classkeraflow_1_1backend_1_1theano__backend_1_1TheanoBackend.html#a18327c696af55374bca7a4ebbc0fd2f1',1,'keraflow.backend.theano_backend.TheanoBackend.squeeze()']]],
   ['std',['std',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#ac0683e4c6845e4b205cd8803520d0032',1,'keraflow::backend::tensorflow_backend::TensorflowBackend']]],
+  ['support_5fmask',['support_mask',['../classkeraflow_1_1layers_1_1base_1_1Layer.html#a67b757551e60d38dda1887c595dd22a3',1,'keraflow::layers::base::Layer']]],
   ['switch',['switch',['../classkeraflow_1_1backend_1_1tensorflow__backend_1_1TensorflowBackend.html#a6f5eaa2bb63d012f6e02e1cbdb74f06d',1,'keraflow.backend.tensorflow_backend.TensorflowBackend.switch()'],['../classkeraflow_1_1backend_1_1theano__backend_1_1TheanoBackend.html#a029663d88fcac635e974cb5265e765ee',1,'keraflow.backend.theano_backend.TheanoBackend.switch()']]]
 ];

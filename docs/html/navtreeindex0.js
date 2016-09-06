@@ -6,8 +6,8 @@ var NAVTREEINDEX0 =
 ".html":[9,0,0,8],
 ".html":[9,0,0,10],
 ".html":[9,0,0,10,0],
-".html":[9,0,0,10,2],
 ".html":[9,0,0,5,0],
+".html":[9,0,0,10,2],
 ".html":[9,0,0,5,1],
 ".html":[8,0,0,5],
 ".html":[9,0,0],
@@ -113,12 +113,13 @@ var NAVTREEINDEX0 =
 "classkeraflow_1_1layers_1_1base_1_1Kensor.html":[9,0,0,5,0,0],
 "classkeraflow_1_1layers_1_1base_1_1Kensor.html#ad493720e6cbb3b19ea8a7601c871966b":[9,0,0,5,0,0,0],
 "classkeraflow_1_1layers_1_1base_1_1Layer.html":[9,0,0,5,0,1],
-"classkeraflow_1_1layers_1_1base_1_1Layer.html#a1f1d4ffeb3f456e6d4c590c24e9aee81":[9,0,0,5,0,1,12],
+"classkeraflow_1_1layers_1_1base_1_1Layer.html#a1f1d4ffeb3f456e6d4c590c24e9aee81":[9,0,0,5,0,1,13],
 "classkeraflow_1_1layers_1_1base_1_1Layer.html#a2c66dc43b0a5eade35c7fc47e267b22b":[9,0,0,5,0,1,1],
 "classkeraflow_1_1layers_1_1base_1_1Layer.html#a31f7ca6d401883ac01dbcad31356d293":[9,0,0,5,0,1,7],
 "classkeraflow_1_1layers_1_1base_1_1Layer.html#a34479a946c4b2598bf404e0d2d91c404":[9,0,0,5,0,1,5],
 "classkeraflow_1_1layers_1_1base_1_1Layer.html#a47aefb1205cb3e4b121c2cb992f44d76":[9,0,0,5,0,1,3],
 "classkeraflow_1_1layers_1_1base_1_1Layer.html#a5a5b42a33522e6d5cde6ee8e880ecd58":[9,0,0,5,0,1,8],
+"classkeraflow_1_1layers_1_1base_1_1Layer.html#a67b757551e60d38dda1887c595dd22a3":[9,0,0,5,0,1,12],
 "classkeraflow_1_1layers_1_1base_1_1Layer.html#a720a2d4674e407d73302570c8cc5a968":[9,0,0,5,0,1,9],
 "classkeraflow_1_1layers_1_1base_1_1Layer.html#aa5f88487e05503f9488b35156c993c42":[9,0,0,5,0,1,0],
 "classkeraflow_1_1layers_1_1base_1_1Layer.html#aa9a86d73c6970619f4d3049f7cef1820":[9,0,0,5,0,1,10],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "md_Developer-Guide.html":[1],
 "md_Developer-Guide.html#implementing_layer_functions":[1,0,0],
 "md_Developer-Guide.html#keraflow_mechanism":[1,1],
-"md_Developer-Guide.html#layer_embedding":[1,0,1],
-"md_Developer-Guide.html#serialization_mechanism":[1,1,1]
+"md_Developer-Guide.html#layer_embedding":[1,0,1]
 };

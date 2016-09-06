@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"md_Developer-Guide.html#serialization_mechanism":[1,1,1],
 "md_Developer-Guide.html#tensor_linkage_mechanism":[1,1,0],
 "md_Developer-Guide.html#writing_customized_layer":[1,0],
 "md_Initializations.html":[3],
@@ -35,10 +36,10 @@ var NAVTREEINDEX1 =
 "namespacekeraflow_1_1initializations.html":[8,0,0,2],
 "namespacekeraflow_1_1objectives.html":[9,0,0,7],
 "namespacekeraflow_1_1objectives.html":[8,0,0,3],
-"namespacekeraflow_1_1regularizers.html":[9,0,0,9],
 "namespacekeraflow_1_1regularizers.html":[8,0,0,4],
-"namespacekeraflow_1_1utils_1_1generic__utils.html":[8,0,0,5,0],
+"namespacekeraflow_1_1regularizers.html":[9,0,0,9],
 "namespacekeraflow_1_1utils_1_1generic__utils.html":[9,0,0,10,1],
+"namespacekeraflow_1_1utils_1_1generic__utils.html":[8,0,0,5,0],
 "namespacemembers.html":[8,1,0],
 "namespacemembers_func.html":[8,1,1],
 "namespaces.html":[8,0],
