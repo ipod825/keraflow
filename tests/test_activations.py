@@ -5,6 +5,7 @@ from numpy.testing import assert_allclose
 from keraflow import backend as B
 from keraflow import activations
 from keraflow.utils import KeraFlowError as KError
+from keraflow.utils.test_utils import float_test_rtol
 
 np_input = np.linspace(-1, 1, 5)[None,:]
 
@@ -18,7 +19,7 @@ def activation_test(k_fn, np_fn, np_input=np_input, debug=False):
         print("Expected Output Shape:\n{}".format(np_fn(np_input)))
         print("Output:\n{}".format(f([np_input])[0]))
 
-    assert_allclose(f([np_input])[0], np_fn(np_input), rtol=1e-05)
+    assert_allclose(f([np_input])[0], np_fn(np_input).astype(B._FLOATX), rtol=float_test_rtol)
 
 
 def test_linear():

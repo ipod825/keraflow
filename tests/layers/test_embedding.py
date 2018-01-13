@@ -23,6 +23,7 @@ def test_embedding():
     emb_oup = embeddings.Embedding(vocab_size, output_dim)(input1)
     assert emb_oup.tensor._keraflow_mask is not None
 
+
 if __name__ == '__main__':
     fns = globals().copy().values()
     for f in fns:

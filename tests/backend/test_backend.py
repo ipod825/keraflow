@@ -7,6 +7,7 @@ def test_random():
 
 # TODO write more tests
 
+
 if __name__ == '__main__':
     fns = globals().copy().values()
     for f in fns:

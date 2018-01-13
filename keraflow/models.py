@@ -489,7 +489,7 @@ class Model(object):
             try:
                 import hickle
                 weights = hickle.load(weight_fname)
-            except:
+            except Exception:
                 import io
                 import pickle
                 with io.open(weight_fname, 'rb') as f:

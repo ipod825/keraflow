@@ -60,6 +60,7 @@ def feed_test(inp_layers, oup_layers, expected_output, num_params, multi_output=
     for c1, c2 in zip(model.constraints.values(), model2.constraints.values()):
         assert str(serialize(c1))==str(serialize(c2))
 
+
 params = dict(initial_weights=[W, b],
               regularizers={'b':L2(l2=0.1)},
               constraints=[MaxNorm(m=10)])

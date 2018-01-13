@@ -2,8 +2,8 @@
 @package keraflow.utils.generic_utils
 Generic utils for keraflow.
 '''
+from __future__ import print_function
 import six
-import sys
 import os
 
 from . import alias
@@ -192,9 +192,8 @@ def ask_overwrite(overwrite, filepath):
     if not os.path.exists(filepath):
         return False
 
-    get_input = input
-    if sys.version_info[:2] <= (2, 7):
-        get_input = raw_input
+    if hasattr(__builtins__, 'raw_input'):
+        get_input = getattr(__builtins__, 'raw_input')
     overwrite = get_input('[WARNING] {} already exists - overwrite? [y/n]'.format(filepath))
 
     while overwrite not in ['y', 'n']:

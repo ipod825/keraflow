@@ -23,6 +23,7 @@ class TheanoBackend(Backend):
         super(TheanoBackend, self).__init__(**kwargs)
         self.rng = RandomStreams(self._seed)
         theano.config.floatX = _FLOATX
+        theano.config.warn.round = False
 
     def reset_random_state(self):
         self.rng = RandomStreams(self._seed)
@@ -364,32 +365,32 @@ class TheanoBackend(Backend):
                 max_padding[i] = p
 
         if do2D:
-            pool_out = pool.pool_2d(x, ds=pool_size, st=strides,
+            pool_out = pool.pool_2d(x, ws=pool_size, stride=strides,
                                     ignore_border=True,
-                                    padding=max_padding,
+                                    pad=max_padding,
                                     mode=mode)
         else:
             # pool over HW
             pool_out = pool.pool_2d(x.dimshuffle(0,1,4,2,3),
-                                    ds=pool_size[:2],
-                                    st=strides[:2],
+                                    ws=pool_size[:2],
+                                    stride=strides[:2],
                                     ignore_border=True,
-                                    padding=max_padding[:2],
+                                    pad=max_padding[:2],
                                     mode=mode)
 
             # pool over Z
             pool_out = pool.pool_2d(pool_out.dimshuffle(0,1,3,4,2),
-                                    ds=(1,pool_size[2]),
-                                    st=(1,strides[2]),
+                                    ws=(1,pool_size[2]),
+                                    stride=(1,strides[2]),
                                     ignore_border=True,
-                                    padding=(0, max_padding[2]),
+                                    pad=(0, max_padding[2]),
                                     mode=mode)
 
         # theano might output more than expected output shape (due to max padding). We truncate them here
         exp_l = []
         for i in range(len(strides)):
-            l = T.ceil(self.cast(x.shape[i+2], _FLOATX)/strides[i])
-            exp_l.append(self.cast(l, 'int32'))
+            c = T.ceil(self.cast(x.shape[i+2], _FLOATX)/strides[i])
+            exp_l.append(self.cast(c, 'int32'))
 
         if do2D:
             return pool_out[:, :, :exp_l[0], :exp_l[1]]

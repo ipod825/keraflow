@@ -32,8 +32,10 @@ def test_compile():
 
 def tets_fit():
     # forget to compile
+    inp1 = Input(1, batch_size=1)
+    d1 = Dense(1)
+    model = Model(inp1, d1)
     with pytest.raises(KError):
-        model = Model(inp1, d1)
         model.fit([[1]], [[1]])
 
 

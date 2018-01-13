@@ -1,4 +1,3 @@
-import copy
 import os
 import warnings
 
@@ -7,6 +6,9 @@ import tensorflow as tf
 
 from ..utils import KeraFlowError as KError
 from .common import _FLOATX, Backend
+
+py_all = all
+py_sum = sum
 
 
 class TensorflowBackend(Backend):
@@ -32,6 +34,52 @@ class TensorflowBackend(Backend):
         pass
 
     # SYMBOLIC TENSOR
+    def is_sparse(self, tensor):
+        """Returns whether a tensor is a sparse tensor.
+
+        # Arguments
+            tensor: A tensor instance.
+
+        # Returns
+            A boolean.
+
+        # Example
+        ```python
+            >>> from keras import backend as K
+            >>> a = K.placeholder((2, 2), sparse=False)
+            >>> print(K.is_sparse(a))
+            False
+            >>> b = K.placeholder((2, 2), sparse=True)
+            >>> print(K.is_sparse(b))
+            True
+        ```
+        """
+        return isinstance(tensor, tf.SparseTensor)
+
+    def to_dense(self, tensor):
+        """Converts a sparse tensor into a dense tensor and returns it.
+
+        # Arguments
+            tensor: A tensor instance (potentially sparse).
+
+        # Returns
+            A dense tensor.
+
+        # Examples
+        ```python
+            >>> from keras import backend as K
+            >>> b = K.placeholder((2, 2), sparse=True)
+            >>> print(K.is_sparse(b))
+            True
+            >>> c = K.to_dense(b)
+            >>> print(K.is_sparse(c))
+            False
+        ```
+        """
+        if self.is_sparse(tensor):
+            return tf.sparse_tensor_to_dense(tensor)
+        else:
+            return tensor
 
     def constant(self, value, dtype=_FLOATX, name=None):
         return tf.constant(value, dtype=dtype, name=name)
@@ -63,8 +111,10 @@ class TensorflowBackend(Backend):
         integers or None entries.
         Note that this function only works with TensorFlow.
         '''
-        shape = x.get_shape()
-        return tuple([i.__int__() for i in shape])
+        try:
+            return tuple(x.get_shape().as_list())
+        except ValueError:
+            return None
 
     def ndim(self, x):
         '''Returns the number of axes in a tensor, as an integer.
@@ -77,7 +127,7 @@ class TensorflowBackend(Backend):
     def dtype(self, x):
         '''Returns the dtype of a tensor, as a string.
         '''
-        return x.dtype.name
+        return x.dtype.base_dtype.name
 
     def eval(self, x):
         '''Evaluates the value of a tensor.
@@ -97,20 +147,57 @@ class TensorflowBackend(Backend):
         tf.assign(x, np.asarray(value)).op.run(session=self.session)
 
     def switch(self, condition, then_expression, else_expression):
-        '''Switches between two operations depending on a scalar value (int or bool).
+        '''Switches between two operations depending on a scalar value.
         Note that both `then_expression` and `else_expression`
         should be symbolic tensors of the *same shape*.
 
         # Arguments
-            condition: scalar tensor.
+            condition: scalar tensor (int or bool).
             then_expression: TensorFlow operation.
             else_expression: TensorFlow operation.
+        @return The selected tensor..
         '''
-        x_shape = copy.copy(then_expression.get_shape())
-        x = tf.python.control_flow_ops.cond(self.cast(condition, 'bool'),
-                                            lambda: then_expression,
-                                            lambda: else_expression)
-        x.set_shape(x_shape)
+        if condition.dtype != tf.bool:
+            condition = tf.cast(condition, 'bool')
+        cond_ndim = self.ndim(condition)
+        if cond_ndim is not None:
+            if not callable(then_expression):
+                def then_expression_fn():
+                    return then_expression
+            else:
+                then_expression_fn = then_expression
+            if not callable(else_expression):
+                def else_expression_fn():
+                    return else_expression
+            else:
+                else_expression_fn = else_expression
+            x = tf.cond(condition,
+                        then_expression_fn,
+                        else_expression_fn)
+        else:
+            # tf.where needs its condition tensor
+            # to be the same shape as its two
+            # result tensors
+            if callable(then_expression):
+                then_expression = then_expression()
+            if callable(else_expression):
+                else_expression = else_expression()
+            expr_ndim = self.ndim(then_expression)
+            if cond_ndim > expr_ndim:
+                raise ValueError('Rank of `condition` should be less than or'
+                                 ' equal to rank of `then_expression` and '
+                                 '`else_expression`. ndim(condition)=' +
+                                 str(cond_ndim) + ', ndim(then_expression)'
+                                 '=' + str(expr_ndim))
+            if cond_ndim > 1:
+                ndim_diff = expr_ndim - cond_ndim
+                cond_shape = tf.concat([tf.shape(condition), [1] * ndim_diff], axis=0)
+                condition = tf.reshape(condition, cond_shape)
+                expr_shape = tf.shape(then_expression)
+                shape_diff = expr_shape - cond_shape
+                tile_shape = tf.where(shape_diff > 0, expr_shape, tf.ones_like(expr_shape))
+                condition = tf.tile(condition, tile_shape)
+            x = tf.where(condition, then_expression, else_expression)
         return x
 
     def _Function(self, inputs, outputs, updates=[]):
@@ -160,11 +247,43 @@ class TensorflowBackend(Backend):
     def random_normal(self, shape, mean=0.0, std=1.0, dtype=_FLOATX):
         return tf.random_normal(shape, mean=mean, stddev=std, dtype=dtype)
 
-    def random_uniform(self, shape, low=0.0, high=1.0, dtype=_FLOATX):
-        return tf.random_uniform(shape, minval=low, maxval=high, dtype=dtype)
+    def random_uniform(self, shape, minval=0.0, maxval=1.0, dtype=_FLOATX, seed=None):
+        """Returns a tensor with uniform distribution of values.
 
-    def random_binomial(self, shape, p=0.0, dtype=_FLOATX):
-        return tf.select(tf.random_uniform(shape, dtype=dtype) <= p, tf.ones(shape), tf.zeros(shape))
+        # Arguments
+            shape: A tuple of integers, the shape of tensor to create.
+            minval: A float, lower boundary of the uniform distribution
+                to draw samples.
+            maxval: A float, upper boundary of the uniform distribution
+                to draw samples.
+            dtype: String, dtype of returned tensor.
+            seed: Integer, random seed.
+
+        # Returns
+            A tensor.
+        """
+        if seed is None:
+            seed = np.random.randint(10e6)
+        return tf.random_uniform(shape, minval=minval, maxval=maxval,
+                                 dtype=dtype, seed=seed)
+
+    def random_binomial(self, shape, p=0.0, dtype=_FLOATX, seed=None):
+        """Returns a tensor with random binomial distribution of values.
+
+        # Arguments
+            shape: A tuple of integers, the shape of tensor to create.
+            p: A float, `0. <= p <= 1`, probability of binomial distribution.
+            dtype: String, dtype of returned tensor.
+            seed: Integer, random seed.
+
+        # Returns
+            A tensor.
+        """
+        if seed is None:
+            seed = np.random.randint(10e6)
+        return tf.where(tf.random_uniform(shape, dtype=dtype, seed=seed) <= p,
+                        tf.ones(shape, dtype=dtype),
+                        tf.zeros(shape, dtype=dtype))
 
     # NUMPY API
 
@@ -363,11 +482,16 @@ class TensorflowBackend(Backend):
         '''Concantes a list of tensors alongside the specified axis.
         '''
         if axis < 0:
-            if len(tensors[0].get_shape()):
-                axis = axis % len(tensors[0].get_shape())
+            rank = self.ndim(tensors[0])
+            if rank:
+                axis %= rank
             else:
                 axis = 0
-        return tf.concat(axis, tensors)
+
+        if py_all([self.is_sparse(x) for x in tensors]):
+            return tf.sparse_concat(axis, tensors)
+        else:
+            return tf.concat([self.to_dense(x) for x in tensors], axis)
 
     def reshape(self, x, shape):
         '''Reshapes a tensor to the specified shape.
@@ -384,17 +508,53 @@ class TensorflowBackend(Backend):
         return tf.transpose(x, perm=dims)
 
     def repeat(self, x, rep, axis):
-        '''Repeats the elements of a tensor along an axis, like np.repeat
+        """Repeats the elements of a tensor along an axis, like `np.repeat`.
 
-        If x has shape (s1, s2, s3) and axis=1, the output
-        will have shape (s1, s2 * rep, s3)
-        '''
+        If `x` has shape `(s1, s2, s3)` and `axis` is `1`, the output
+        will have shape `(s1, s2 * rep, s3)`.
+
+        # Arguments
+            x: Tensor or variable.
+            rep: Python integer, number of times to repeat.
+            axis: Axis along which to repeat.
+
+        # Returns
+            A tensor.
+        """
         x_shape = x.get_shape().as_list()
-        # slices along the repeat axis
-        splits = tf.split(axis, x_shape[axis], x)
-        # repeat each slice the given number of reps
-        x_rep = [s for s in splits for i in range(rep)]
-        return tf.concat(axis, x_rep)
+        # For static axis
+        if x_shape[axis] is not None:
+            # slices along the repeat axis
+            splits = tf.split(value=x, num_or_size_splits=x_shape[axis], axis=axis)
+            # repeat each slice the given number of reps
+            x_rep = [s for s in splits for _ in range(rep)]
+            return self.concatenate(x_rep, axis)
+
+        # Here we use tf.tile to mimic behavior of np.repeat so that
+        # we can handle dynamic shapes (that include None).
+        # To do that, we need an auxiliary axis to repeat elements along
+        # it and then merge them along the desired axis.
+
+        # Repeating
+        auxiliary_axis = axis + 1
+        x_shape = tf.shape(x)
+        x_rep = tf.expand_dims(x, axis=auxiliary_axis)
+        reps = np.ones(len(x.get_shape()) + 1)
+        reps[auxiliary_axis] = rep
+        x_rep = tf.tile(x_rep, reps)
+
+        # Merging
+        reps = np.delete(reps, auxiliary_axis)
+        reps[axis] = rep
+        reps = tf.constant(reps, dtype='int32')
+        x_shape = x_shape * reps
+        x_rep = tf.reshape(x_rep, x_shape)
+
+        # Fix shape representation
+        x_shape = x.get_shape().as_list()
+        x_rep.set_shape(x_shape)
+        x_rep._keras_shape = tuple(x_shape)
+        return x_rep
 
     def tile(self, x, n):
         if not hasattr(n, 'shape') and not hasattr(n, '__len__'):
@@ -415,7 +575,7 @@ class TensorflowBackend(Backend):
         return tf.squeeze(x, [axis])
 
     def stack(self, x):
-        return tf.pack(x)
+        return tf.stack(x)
 
     # NN OPERATIONS
 
@@ -467,7 +627,7 @@ class TensorflowBackend(Backend):
     def softsign(self, x):
         return tf.nn.softsign(x)
 
-    def dropout(self, x, drop_rate, noise_shape=None):
+    def dropout(self, x, drop_rate, noise_shape=None, seed=None):
         '''Sets entries in `x` to zero at random, while scaling the entire tensor.
         @param x: tensor
         @param drop_rate: fraction of the entries in the tensor that will be set to 0.
@@ -476,6 +636,8 @@ class TensorflowBackend(Backend):
         assert drop_rate > 0. or drop_rate < 1, 'Dropout drop_rate must be in interval [0, 1].'
 
         retain_prob = 1. - drop_rate
+        if seed is None:
+            seed = np.random.randint(10e6)
 
         if noise_shape is None:
             random_tensor = self.random_binomial(self.shape(x), p=retain_prob)
@@ -485,6 +647,9 @@ class TensorflowBackend(Backend):
         train_x = x*random_tensor
         train_x /= retain_prob
         return self.in_train_phase(train_x, x)
+        # # the dummy 1. works around a TF bug
+        # # (float32_ref vs. float32 incompatibility)
+        # return tf.nn.dropout(x * 1., retain_prob, noise_shape, seed=seed)
 
     def _to_NHWZC(self, x):
         # (nb_sample, input_depth, rows, cols, ...) ->
@@ -563,10 +728,14 @@ class TensorflowBackend(Backend):
             go_backwards=False, mask=None,
             unroll=False, input_length=None):
         ndim = len(inputs.get_shape())
-        assert ndim >= 3, "Input should be at least 3D."
+        if ndim < 3:
+            raise ValueError('Input should be at least 3D.')
+
+        # Transpose to time-major, i.e.
+        # from (batch, time, ...) to (time, batch, ...)
         axes = [1, 0] + list(range(2, ndim))
         inputs = tf.transpose(inputs, (axes))
-        input_list = tf.unpack(inputs)
+        input_list = tf.unstack(inputs)
 
         states = initial_states
         successive_states = []
@@ -580,7 +749,7 @@ class TensorflowBackend(Backend):
             if len(mask.get_shape()) == ndim-1:
                 mask = self.expand_dims(mask)
             mask = tf.cast(tf.transpose(mask, axes), tf.bool)
-            mask_list = tf.unpack(mask)
+            mask_list = tf.unstack(mask)
 
             if go_backwards:
                 mask_list.reverse()
@@ -594,20 +763,20 @@ class TensorflowBackend(Backend):
                 # broadcast the mask to match the shape of A and B. That's what the
                 # tile call does, is just repeat the mask along its second dimension
                 # ndimensions times.
-                tiled_mask_t = tf.tile(mask_t, tf.pack([1, tf.shape(output)[1]]))
+                tiled_mask_t = tf.tile(mask_t, tf.stack([1, tf.shape(output)[1]]))
 
                 if len(successive_outputs) == 0:
                     prev_output = self.zeros_like(output)
                 else:
                     prev_output = successive_outputs[-1]
 
-                output = tf.select(tiled_mask_t, output, prev_output)
+                output = tf.where(tiled_mask_t, output, prev_output)
 
                 return_states = []
                 for state, new_state in zip(states, new_states):
                     # (see earlier comment for tile explanation)
-                    tiled_mask_t = tf.tile(mask_t, tf.pack([1, tf.shape(new_state)[1]]))
-                    return_states.append(tf.select(tiled_mask_t, new_state, state))
+                    tiled_mask_t = tf.tile(mask_t, tf.stack([1, tf.shape(new_state)[1]]))
+                    return_states.append(tf.where(tiled_mask_t, new_state, state))
 
                 states = return_states
                 successive_outputs.append(output)
@@ -619,7 +788,7 @@ class TensorflowBackend(Backend):
                 successive_states.append(states)
 
         last_output = successive_outputs[-1]
-        outputs = tf.pack(successive_outputs)
+        outputs = tf.stack(successive_outputs)
         new_states = successive_states[-1]
 
         axes = [1, 0] + list(range(2, len(outputs.get_shape())))

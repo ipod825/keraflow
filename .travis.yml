@@ -12,7 +12,7 @@ matrix:
         - python: 2.7
           env: KERAFLOW_BACKEND=tensorflow
         - python: 2.7
-          env: TEST_MODE=PEP8
+          env: TEST_MODE=FLAKE8
 
 install:
   - bash dev_scripts/install_dependency.sh

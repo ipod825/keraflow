@@ -39,6 +39,7 @@ def test_unitnorm():
 
     constraint_test(constraints.UnitNorm(axis=axis), unit_norm)
 
+
 if __name__ == '__main__':
     fns = globals().copy().values()
     for f in fns:

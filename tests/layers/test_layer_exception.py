@@ -115,6 +115,7 @@ def test_feed_exceptions():
     with pytest.raises(KError):
         input1 = Input(1)(Input(1))
 
+
 if __name__ == '__main__':
     fns = globals().copy().values()
     for f in fns:

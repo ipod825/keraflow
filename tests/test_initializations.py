@@ -80,6 +80,7 @@ def test_zero():
 def test_one():
     init_test(initializations.one, target_mean=1., target_max=1.)
 
+
 if __name__ == '__main__':
     fns = globals().copy().values()
     for f in fns:

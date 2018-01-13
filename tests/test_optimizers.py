@@ -4,7 +4,7 @@ from numpy.testing import assert_allclose
 import keraflow.backend as B
 from keraflow.layers import Dense, Input
 from keraflow.models import Sequential
-from keraflow.optimizers import SGD, Adadelta, Adagrad, Adam, Adamax, RMSprop
+from keraflow.optimizers import SGD
 
 
 def test_sgd():

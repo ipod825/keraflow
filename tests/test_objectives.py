@@ -138,6 +138,7 @@ def test_cosine_proximity():
 
     objectives_test(objectives.cosine_proximity, cp, mode='reg')
 
+
 if __name__ == '__main__':
     fns = globals().copy().values()
     for f in fns:

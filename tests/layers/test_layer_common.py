@@ -59,17 +59,17 @@ def test_initial_weights():
 
 
 def test_regularizers():
-    l = 0.01
-    W_l1 = l*np.sum(abs(W))
-    wpb_l1 = l*np.sum(abs(wpb))
+    i = 0.01
+    W_l1 = i*np.sum(abs(W))
+    wpb_l1 = i*np.sum(abs(wpb))
 
     m1 = create_model(dense(initial_weights=[W, b]))
-    m2 = create_model(dense(initial_weights=[W, b], regularizers={'W':L1(l), 'b':L1(l)}))
-    m3 = create_model(dense(initial_weights=[W, b], regularizers={'W':L1(l)}))
-    m4 = create_model(dense(initial_weights=[W, b], regularizers=[L1(l), L1(l)]))
-    m5 = create_model(dense(initial_weights=[W, b], regularizers=[L1(l)]))
-    m6 = create_model(Sequential([dense(initial_weights=[W,b], regularizers=[L1(l), L1(l)])]))
-    m7 = create_model(Sequential([Sequential([dense(initial_weights=[W,b], regularizers=[L1(l), L1(l)])])]))
+    m2 = create_model(dense(initial_weights=[W, b], regularizers={'W':L1(i), 'b':L1(i)}))
+    m3 = create_model(dense(initial_weights=[W, b], regularizers={'W':L1(i)}))
+    m4 = create_model(dense(initial_weights=[W, b], regularizers=[L1(i), L1(i)]))
+    m5 = create_model(dense(initial_weights=[W, b], regularizers=[L1(i)]))
+    m6 = create_model(Sequential([dense(initial_weights=[W,b], regularizers=[L1(i), L1(i)])]))
+    m7 = create_model(Sequential([Sequential([dense(initial_weights=[W,b], regularizers=[L1(i), L1(i)])])]))
 
     def eval_model(m, train_mode=True):
         # output - expected = regularizer loss
@@ -120,6 +120,7 @@ def test_constraints():
     assert_allclose(B.eval(m6.layers[1].embedded_layers[0].b), constraint_b)
     assert_allclose(B.eval(m7.layers[1].embedded_layers[0].embedded_layers[0].W), constraint_w)
     assert_allclose(B.eval(m7.layers[1].embedded_layers[0].embedded_layers[0].b), constraint_b)
+
 
 if __name__ == '__main__':
     fns = globals().copy().values()

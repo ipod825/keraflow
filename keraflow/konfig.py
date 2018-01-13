@@ -26,5 +26,6 @@ def save_config(config):
     with open(keraflow_config, 'w') as f:
         json.dump(config, f, indent=2)
 
+
 keraflow_dir = _get_config_dir()
 keraflow_config = os.path.join(keraflow_dir, 'keraflow.json')

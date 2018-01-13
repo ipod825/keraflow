@@ -1,9 +1,9 @@
+setuptools
 pytest
 pytest-xdist
 pytest-cov
 python-coveralls
-pytest-pep8
-pep8
+pytest-flake8
 
 # extra_requirements
 hickle

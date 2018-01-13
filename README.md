@@ -34,7 +34,6 @@ It is strongly recommended to read the [Tutorials](https://ipod825.github.io/ker
 For more details about the difference between Keraflow and Keras, please refer to the [Differences from Keras](#differences-from-keras).
 
 ---
-
 ## Installation
 
 Keraflow uses the following dependencies:
@@ -55,7 +54,7 @@ Keraflow uses the following dependencies:
 
 To install Keraflow, `cd` to the Keraflow folder and run the install command:
 ~~~{.bash}
-$ sudo python setup.py install
+$ sudo pip install .
 ~~~
 
 You can also install Keraflow from PyPI:
@@ -64,58 +63,6 @@ $ sudo pip install keraflow
 ~~~
 
 ---
-## Contributing
-
-### Environment Setting
-To make Keraflow compatible with both python2 & python3. We use [pyenv](https://github.com/yyuu/pyenv) to build virtual environment.
-The shell script `dev_scrips/install_dependency.sh` could quickly sets up the testing environments.
-~~~{.bash}
-# In project root directory (parent directory  of `dev_scripts`)
-$ bash dev_scrips/install_dependency.sh
-# Two pyenv environment k2, k3 are installed now.
-~~~
-
-__Note__: The script does not add pyenv PATH in your script config file (e.g. ~/.zshrc). You will need to manually copy and paste the following into your shell config file so that the next time you log in, pyenv will be in the PATH:
-
-~~~{.bash}
-export PATH="$HOME/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-~~~
-
-To quickly modify and run tests. Run:
-~~~{.bash}
-$ python setup.py develop  # will link the project root into k2's site package directory
-~~~
-
-And then run tests via `dev_scripts/run_test.sh`. Run:
-~~~{.bash}
-# In project root directory (parent directory  of `dev_scripts`)
-$ bash dev_scripts/run_test.sh
-~~~
-
-`dev_scripts/run_test.sh` checks pep8, python2 testing and python3 testing. You could also run tests manually:
-~~~{.bash}
-$ pyenv activate k2 # python2 environment for testing keraflow
-$ py.test tests  # run tests in tests/ directory
-$ pyenv activate k3 # python3 environment for testing keraflow
-$ py.test tests  # run tests in tests/ directory
-~~~
-
-
-### PEP8
-`dev_scripts/run_test.sh` checks pep8, it you fail on syntax check, you could use `autopep8` to fix it:
-~~~{.bash}
-$ pip install autopep8
-$ autopep8 --recursive -i --select E128 keraflow  # fix all error no.128
-~~~
-
-It is highly recommend you avoid these errors when writing them using some editor plugins. If you use vim (or neovim), I recommend installing `flake8` and adopt the settings in this [gist](https://gist.github.com/ipod825/fbee70d8bd063f228951cd4b6f38f4df). Note that `flask8` is required:
-~~~{.bash}
-$ pip install flask8
-~~~
-
-
 ### Documentation
 1. Documentation uses [doxygen](https://www.stack.nl/~dimitri/doxygen/manual/docblocks.html).
 2. Follow the convention to use `@` for special commands (`param`, `package`... etc.)
@@ -132,7 +79,6 @@ $ doxygen Doxyfile
 ~~~
 
 ---
-
 ## Differences from Keras
 
 ### A simpler tensor linkage mechanism
@@ -191,3 +137,46 @@ self.embed(Dense(output_dim))(input_tensor)
 ~~~
 
 Everything is done!! The parameters of `Dense` is automatically added as parameters of your layer and is updated during training. For more information, see [Layer Embedding](https://ipod825.github.io/keraflow/docs/html/md_Developer-Guide.html#layer_embedding)
+
+---
+## Contribute
+
+### Environment Setting
+To make Keraflow compatible with both python2 & python3. We use [pyenv](https://github.com/yyuu/pyenv) to build virtual environment.
+The shell script `dev_scrips/install_dependency.sh` could quickly sets up the testing environments.
+~~~{.bash}
+# In project root directory (parent directory  of `dev_scripts`)
+# Two pyenv environment k2, k3 will be installed.
+$ bash dev_scrips/install_dependency.sh
+~~~
+
+__Note__: The script does not add pyenv PATH in your script config file (e.g. ~/.zshrc). You will need to manually copy and paste the following into your shell config file so that the next time you log in, pyenv will be in the PATH:
+
+~~~{.bash}
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+~~~
+
+To quickly modify and run tests. Run:
+~~~{.bash}
+# install keraflow in developer mode
+$ PYENV_VERSION=k2 pip install -e .
+$ PYENV_VERSION=k3 pip install -e .
+# In project root directory (parent directory  of `dev_scripts`)
+$ bash dev_scripts/run_test.sh
+~~~
+
+### FLAKE8
+`dev_scripts/run_test.sh` checks syntax with flake8, if you fail on syntax check, you could use `autopep8` to fix it:
+~~~{.bash}
+$ pip install autopep8
+$ autopep8 --recursive -i --select E128 keraflow  # fix all error no.128
+~~~
+
+It is highly recommend you avoid these errors when writing them using some editor plugins. If you use vim (or neovim), I recommend installing `flake8` and adopt the settings in this [gist](https://gist.github.com/ipod825/fbee70d8bd063f228951cd4b6f38f4df). Note that `flask8` is required:
+~~~{.bash}
+$ pip install flask8
+~~~
+
+
