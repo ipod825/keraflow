@@ -160,7 +160,7 @@ class TensorflowBackend(Backend):
         if condition.dtype != tf.bool:
             condition = tf.cast(condition, 'bool')
         cond_ndim = self.ndim(condition)
-        if cond_ndim is not None:
+        if not cond_ndim:
             if not callable(then_expression):
                 def then_expression_fn():
                     return then_expression
