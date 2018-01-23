@@ -240,14 +240,14 @@ class TheanoBackend(Backend):
     def reshape(self, x, shape):
         return T.reshape(x, shape)
 
-    def transpose(self, x, dims):
+    def transpose(self, x, axes):
         '''Transpose dimensions.
 
-        dims should be a tuple or list of
+        axes should be a tuple or list of
         dimension indices, e.g. [0, 2, 1].
         '''
-        dims = tuple(dims)
-        return x.dimshuffle(dims)
+        axes = tuple(axes)
+        return x.dimshuffle(axes)
 
     def repeat(self, x, rep, axis):
         '''Repeat the elements of a tensor along an axis, like np.repeat.

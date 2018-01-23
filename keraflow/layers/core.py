@@ -8,7 +8,7 @@ from .base import Layer, MultiInputLayer
 
 class ExpandDims(Layer):
     '''Expand dimension of the input tensor. Behaves like numpy.expand_dims().
-    - input_shape: nD, `(nb_samples, x, | y, ...)
+    - input_shape: nD, `(nb_samples, x, | y, ...)`
     - output_shape: (n+1)D, `(nb_samples, x, 1, y, ...)`
     '''
     def __init__(self, axis, include_batch_dim=False, **kwargs):
@@ -38,28 +38,28 @@ class PermuteDims(Layer):
     - input_shape: nD, `(nb_samples, x, y, ...)`
     - output_shape: nD, `(nb_samples, y, x, ...)`
     '''
-    def __init__(self, dims, include_batch_dim=False, **kwargs):
+    def __init__(self, axes, include_batch_dim=False, **kwargs):
         '''
-        @param dims: list of int. The permuting dimension pattern.
-        @param include_batch_dim: boolean. If true, in `dims`, 0 refers to the first dimension; otherwise, 0 refers to the second dimension(0->1, 1->2...).
+        @param axes: list of int. The permuting dimension pattern.
+        @param include_batch_dim: boolean. If true, in `axes`, 0 refers to the first dimension; otherwise, 0 refers to the second dimension(0->1, 1->2...).
         @param kwargs: see Layer.__init__.
         '''
         super(PermuteDims, self).__init__(**kwargs)
-        self.dims = dims
+        self.axes = axes
         self.include_batch_dim = include_batch_dim
 
     def output_shape(self, input_shape):
         if self.include_batch_dim:
-            return tuple(np.asarray(input_shape)[self.dims])
+            return tuple(np.asarray(input_shape)[self.axes])
         else:
-            return (input_shape[0],) + tuple(np.asarray(input_shape[1:])[self.dims])
+            return (input_shape[0],) + tuple(np.asarray(input_shape[1:])[self.axes])
 
     def output(self, x):
         if self.include_batch_dim:
-            return B.transpose(x, dims=self.dims)
+            return B.transpose(x, axes=self.axes)
         else:
-            dims = np.asarray(self.dims)+1
-            return B.transpose(x, dims=[0,]+list(dims))
+            axes = np.asarray(self.axes)+1
+            return B.transpose(x, axes=[0,]+list(axes))
 
 
 class Reshape(Layer):
