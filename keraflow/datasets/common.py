@@ -9,7 +9,7 @@ from tqdm import tqdm
 from ..konfig import keraflow_dir
 
 
-def download(url):
+def download(url, untar_name=None):
     datadir = os.path.join(keraflow_dir, 'datasets')
     if not os.path.exists(datadir):
         os.makedirs(datadir)
@@ -49,17 +49,17 @@ def download(url):
             rollback_rm(fpath)
             raise
 
-    # untar_fpath = ''
-    # tgz_pattern = ['.tar.gz', '.tgz']
-    # for p in tgz_pattern:
-    #     if fpath.endswith(p):
-    #         untar_fpath = fpath[:-len(p)]
-    #         break
-    #
-    # if untar_fpath and not os.path.exists(untar_fpath):
-    #     print('Untaring file...')
-    #     with RollbackContext() as rollback:
-    #         rollback.push(rollback_rm, untar_fpath)
-    #         tfile = tarfile.open(fpath, 'r:gz')
+    if untar_name is not None:
+        datadir = os.path.dirname(fpath)
+        untar_path = os.path.join(datadir, untar_name)
+        if not os.path.exists(untar_path):
+            print('Untaring file...')
+            try:
+                tfile = tarfile.open(fpath, 'r:gz')
+                tfile.extractall(path=datadir)
+                tfile.close()
+            except (Exception, KeyboardInterrupt) as e:
+                rollback_rm(untar_path)
+        return untar_path
 
     return fpath

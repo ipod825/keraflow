@@ -32,7 +32,7 @@ class Kensor(object):
 
 class Layer(object):
     ''' Building block of a model.
-    A Layer transform input Kensor (s) into an output Kensor. The transformation could be one-to-one or many-to-one.
+    A Layer transform input Kensor(s) into an output Kensor. The transformation could be one-to-one or many-to-one.
     @see @ref an_over_view_of_layer
     '''
     def __init__(self, name=None, trainable=True, initial_weights=None, regularizers=None, constraints=None):
@@ -59,7 +59,7 @@ class Layer(object):
         self._param_initialized = False
         self.trainable_params = OrderedDict()
         self.receivers = []
-        self.updates = {}
+        self.updates = {}  # layer updates, e.g. hidden state for rnn
         self.embedded_layers = []
         self.embedded_id = None
 
@@ -184,10 +184,7 @@ class Layer(object):
         ''' Gets trainable parameter name, value (numpy arrays) pairs. The names are decided by Layer.init_param of each layer.
         @return dict.
         '''
-
-        names = list(self.trainable_params.keys())
-        param_values = [B.eval(param) for param in self.trainable_params.values()]
-        res = {name: param_value for name, param_value in zip(names, param_values)}
+        res = {name: B.eval(param) for name, param in self.trainable_params.items()}
 
         embedded_layers_weights = {}
         for layer in self.embedded_layers:
@@ -206,6 +203,7 @@ class Layer(object):
         @param params: dict. The result from pack_init_param
         '''
         # restore the initializing parameters defined in __init__
+        # copy since modified below
         res = params.copy()
 
         # special care for regularizers and constraints
@@ -372,7 +370,7 @@ class Layer(object):
         weights_list = self.get_wrc(weights, array=True, allow_missing='skip', error_context='initial weights of '+self.name)
         names = [w[0] for w in weights_list]
         weights = [w[1] for w in weights_list]
-        params = [self.trainable_params[w[0]] for w in weights_list]
+        params = [self.trainable_params[name] for name in names]
 
         for p, w, name in zip(params, weights, names):
             param_shape = B.eval(p).shape

@@ -84,6 +84,7 @@ class Model(object):
             self.trainable_params += info['trainable_params']
             self.regularizers.update(info['regularizers'])
             self.constraints.update(info['constraints'])
+            # layer updates, e.g. hidden state for rnn
             if len(info['updates'])>0:
                 self.layer_updates+=info['updates']
 
@@ -125,7 +126,7 @@ class Model(object):
 
         output_losses = []
         for loss_fn, y_pred, y_true, name in zip(self.loss_fns, self.output_tensors, self.target_tensors, self.output_names):
-            # calculate per sampe loss (average over sample dimensions)
+            # calculate per sample loss (average over sample dimensions)
             loss_array = loss_fn(y_pred, y_true)
             score_array = B.mean(loss_array, axis=list(range(1, B.ndim(loss_array))))
 
@@ -523,21 +524,21 @@ class Model(object):
     def unpack_init_param(init_config):
         input_kensors = []
         layers = {}
-        tensors = {}
+        kensors = {}
         # reinitialize all layers
         for layer_init_config in init_config['layers']:
             layer = utils.unserialize(layer_init_config)
             layers[layer.name] = layer
             if isinstance(layer, Input):
                 input_kensors.append(layer)
-                tensors[layer.name] = layer
+                kensors[layer.name] = layer
 
         # reconnected all layers
         for iname, lname, oname in init_config['path']:
-            output_port = layers[lname]([tensors[name] for name in iname])
-            tensors[oname] = output_port
+            output_kensor = layers[lname]([kensors[name] for name in iname])
+            kensors[oname] = output_kensor
 
-        output_kensors = [tensors[name] for name in init_config['output_names']]
+        output_kensors = [kensors[name] for name in init_config['output_names']]
 
         return {'name': init_config['name'],
                 'inputs': input_kensors,

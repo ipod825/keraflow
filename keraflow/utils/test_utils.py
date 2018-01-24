@@ -1,11 +1,14 @@
 import numpy as np
-from numpy.testing import assert_allclose
 
 from keraflow.layers import Input
 from keraflow.models import Model
 from keraflow.utils.generic_utils import unlist_if_one
 
 float_test_rtol = 1e-6
+
+
+def assert_allclose(a, b, **kwargs):
+    np.testing.assert_allclose(a, b, rtol=float_test_rtol, **kwargs)
 
 
 def layer_test(layer, inp_vals, exp_output=None, random_exp={}, multi_input=False, debug=False, input_args={}, test_serialization=True, train_mode=True):
@@ -50,7 +53,7 @@ def layer_test(layer, inp_vals, exp_output=None, random_exp={}, multi_input=Fals
             sys.exit(-1)
 
     if exp_output is not None:
-        assert_allclose(output, exp_output, err_msg='===={}.output() incorrect!====\n'.format(cls_name), rtol=float_test_rtol)
+        assert_allclose(output, exp_output, err_msg='===={}.output() incorrect!====\n'.format(cls_name))
         if None in output_shape:
             assert output_shape[0] is None
             assert_allclose(output_shape[1:], exp_output.shape[1:], err_msg='===={}.output_shape() incorrect!===='.format(cls_name))

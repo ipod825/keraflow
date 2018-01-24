@@ -1,5 +1,4 @@
 import numpy as np
-from numpy.testing import assert_allclose
 
 import keraflow.backend as B
 from keraflow.constraints import MaxNorm
@@ -7,6 +6,7 @@ from keraflow.layers import Input
 from keraflow.models import Sequential
 from keraflow.regularizers import L1
 from keraflow.layers import Dense
+from keraflow.utils.test_utils import assert_allclose
 
 W = np.array([[1, 2]])
 b = np.array([3, 4])

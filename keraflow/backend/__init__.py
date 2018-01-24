@@ -8,7 +8,7 @@ from .. import konfig
 
 def _get_backend_name():
     config = konfig.get_config()
-    backend = config.get('backend', 'theano')
+    backend = config.get('backend', 'tensorflow')
     epsilon = config.get('epsilon', _EPSILON)
     floatx = config.get('floatx', _FLOATX)
 

@@ -16,7 +16,7 @@ class UserInput(object):
     def __call__(self, user_input, array=False, allow_missing=False, no_single_value=True, error_context=''):
         '''
         @param user_input: dict/list/single object(s)
-        @param array: boolean. Whether each target accepts an numpy array. If only single target, a list is also acceptable. The list well be automatically transformed to a numpy array.
+        @param array: boolean. Whether each target accepts an numpy array. If only single target, a list is also acceptable. The list will be automatically transformed to a numpy array.
         @param allow_missing: False or 'skip', 'fill_none'.
             If False, len(user_inputs) should be equal to len(legal_names). Return list of values
             If 'skip', return a list of (name, value) tuples, target that is not specified is not returned.
